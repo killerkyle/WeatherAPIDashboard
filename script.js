@@ -1,6 +1,6 @@
-const apiKey = "0765d126b0f6a7eb158764d733ae5823";
-var currWeatherDiv = $("#currentWeather");
+const apiKey = "b594d77f8c0d258278e906448b183c85";
 var forecastDiv = $("#weatherForecast");
+var currWeatherDiv = $("#currentWeather");
 var citiesArray;
 
 if (localStorage.getItem("localWeatherSearches")) {
@@ -57,8 +57,10 @@ function returnWeatherForecast(cityName) {
     })
 };
 
-// The current UV index is collected at the same time as the current weather
-// by making use of the searched city's returned coordinates
+/* UV index is collected at the same time as the current weather
+ by using the searched city's coordinates */
+
+
 function returnUVIndex(coordinates) {
     let queryURL = `https://api.openweathermap.org/data/2.5/uvi?lat=${coordinates.lat}&lon=${coordinates.lon}&APPID=${apiKey}`;
 
@@ -66,25 +68,33 @@ function returnUVIndex(coordinates) {
         let currUVIndex = response.value;
         let uvSeverity = "green";
         let textColour = "white"
-        //Change UV background based on severity
-        //Also change text colour for readability
+
+
+        /* UV background changes based on severity
+        text color changes for readability */
+
+
         if (currUVIndex >= 11) {
             uvSeverity = "purple";
-        } else if (currUVIndex >= 8) {
-            uvSeverity = "red";
-        } else if (currUVIndex >= 6) {
-            uvSeverity = "orange";
-            textColour = "black"
-        } else if (currUVIndex >= 3) {
-            uvSeverity = "yellow";
-            textColour = "black"
+            } else if (currUVIndex >= 8) {
+                uvSeverity = "red";
+            } else if (currUVIndex >= 6) {
+                uvSeverity = "orange";
+                    textColour = "black"
+            } else if (currUVIndex >= 3) {
+                uvSeverity = "yellow";
+                    textColour = "black"
         }
         currWeatherDiv.append(`<p>UV Index: <span class="text-${textColour} uvPadding" style="background-color: ${uvSeverity};">${currUVIndex}</span></p>`);
     })
 }
 
 function createHistoryButton(cityName) {
-    // Check if the button exists in history, and if it does, exit the function
+
+
+    // Check if the button exists in history, if it does, exit the function
+
+
     var citySearch = cityName.trim();
     var buttonCheck = $(`#previousSearch > BUTTON[value='${citySearch}']`);
     if (buttonCheck.length == 1) {
@@ -108,6 +118,8 @@ function writeSearchHistory(array) {
 }
 
 // Get a deafult weather search
+
+
 returnCurrentWeather("Salt Lake City");
 returnWeatherForecast("Salt Lake City");
 
